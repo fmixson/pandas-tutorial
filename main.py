@@ -11,7 +11,6 @@ class Dataframe():
     def __init__(self, df):
         self.df = df
 
-
     def get_times_days(self):
         amtimes = []
         times = self.df['Start'].unique()

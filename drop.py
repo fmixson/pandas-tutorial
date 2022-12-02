@@ -19,7 +19,8 @@ app.layout = html.Div(
     [
         dbc.Row(dbc.Col(html.Div('A Single Column'))),
         dbc.Row([
-            dbc.Col(html.Div(dash_table.DataTable(df3.to_dict('records'), [{'name': i, 'id': i} for i in df3.columns]),), width=4),
+            dbc.Col(html.Div(dash_table.DataTable(df3.to_dict('records'), [{'name': i, 'id': i} for i in df3.columns]),), width=4
+                    ),
             dbc.Col(html.Div(dash_table.DataTable(df2.to_dict('records'), [{'name': i, 'id': i} for i in df2.columns])), width=6),
             dbc.Col(html.Div('One of three columns'))
         ]),
