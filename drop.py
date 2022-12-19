@@ -7,7 +7,7 @@ df = pd.read_csv('C:/Users/flmix/OneDrive/Documents/Data Sheets/Division_Enrollm
 pd.set_option('display.max_columns', None)
 
 
-subset_df = df[['Dept', 'Course', 'Class', 'Size', 'Max', 'FTES']]
+subset_df = df[['Dept', 'Course', 'Class', 'Size', 'Max']]
 
 df2 = subset_df.groupby('Course').agg({'Class': 'count','Size': 'sum','Max': 'sum', 'FTES': 'sum'}).reset_index()
 df3 = subset_df.groupby('Dept').agg({'Class': 'count','Size': 'sum','Max': 'sum', 'FTES': 'sum'}).reset_index()

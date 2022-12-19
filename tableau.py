@@ -5,7 +5,8 @@ pd.set_option('display.max_columns', None)
 
 df.fillna(0, inplace=True)
 df = df.replace(',', '', regex=True)
-df[['Spring 2017', 'Spring 2018', 'Spring 2019', 'Spring 2020', 'Spring 2021', 'Spring 2022']] = df[['Spring 2017','Spring 2018', 'Spring 2019', 'Spring 2020', 'Spring 2021', 'Spring 2022']].astype(str).astype(int)
+df[['Spring 2017', 'Spring 2018', 'Spring 2019', 'Spring 2020', 'Spring 2021', 'Spring 2022']] =\
+    df[['Spring 2017','Spring 2018', 'Spring 2019', 'Spring 2020', 'Spring 2021', 'Spring 2022']].astype(str).astype(int)
 print(df)
 # convert_dict = {'Spring 2017': int, 'Spring 2018': int, 'Spring 2019': int,
 #                                             'Spring 2020': int, 'Spring 2021': int, 'Spring 2022': int}
@@ -20,8 +21,7 @@ enrollments = division_totals_list[1:]
 
 print(division_totals)
 
-print(enrollments
-      )
+print(enrollments)
 print(years)
 
 
