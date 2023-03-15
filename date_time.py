@@ -27,11 +27,6 @@ week_count = 1
 week_of = {}
 for i in range(len(group_dates)):
     if day_count < 7:
-        # if day_count == 1:
-        #     if str(week_count) not in week_of:
-        #         week_of[week_count] = group_dates[i, 'Enrollment Add Date']
-        #         print(week_of)
-
         group_dates.loc[i, 'Week'] = week_count
         # print(group_dates)
         day_count += 1
@@ -48,6 +43,7 @@ group_weeks = group_dates.groupby('Week').agg({'Course': 'sum'}).reset_index()
 # print(group_weeks.dtypes)
 # group_weeks.columns=['Week', 'Course']
 group_weeks.loc[0,'Total'] = group_weeks.loc[0, 'Course']
+
 for i in range(1, len(group_weeks)):
     group_weeks.loc[i, 'Total'] = group_weeks.loc[i, 'Course'] + group_weeks.loc[i-1, 'Total']
 
@@ -82,71 +78,42 @@ for session in sessions:
     for i in range(1, len(group_weeks)):
         group_weeks.loc[i, 'Total'] = group_weeks.loc[i, 'Course'] + group_weeks.loc[i - 1, 'Total']
         sessions_df[session] = group_weeks['Total']
-        # print('sessions', sessions_df)
-    # if session == '1':
-    #     print(group_weeks)
-    #     sessions_df['Regular'] = group_weeks['Total']
-    #
-    # elif session == '15A':
-    #     print(group_weeks)
-    #     sessions_df['15A'] = group_weeks['Total']
-    #
-    # elif session == '15B':
-    #     print(group_weeks)
-    #     sessions_df['15B'] = group_weeks['Total']
-    #
-    # elif session == '9A':
-    #     print(group_weeks)
-    #     sessions_df['9A'] = group_weeks['Total']
-    #
-    # elif session == '9B':
-    #     print(group_weeks)
-    #     sessions_df['9B'] = group_weeks['Total']
-    #
-    # elif '6' in session:
-    #     print(group_weeks)
-    #     sessions_df['6'] = group_weeks['Total']
+        print('sessions', sessions_df)
+    if session == '1':
+        print(group_weeks)
+        sessions_df['Regular'] = group_weeks['Total']
 
-# """
-# THIS SECTION IDENTIFIES TREND BY MODALITY
-# """
-#
-# modalities = ['Online', 'In Person', 'Hybrid', 'Remote']
-# for modality in modalities:
-#     modalities_df = df[df['Modality'] == session]
-#     subset_df = modalities_df[['Enrollment Add Date', 'Modality', 'Course']]
-#     group_dates = subset_df.groupby('Enrollment Add Date').count().reset_index()
-#
-#
-#     day_count = 1
-#     week_count = 1
-#     for i in range(len(group_dates)):
-#         if day_count < 7:
-#             group_dates.loc[i, 'Week'] = week_count
-#             day_count += 1
-#         else:
-#             group_dates.loc[i, 'Week'] = week_count
-#             day_count = 1
-#             week_count += 1
-#
-#     group_weeks = group_dates.groupby('Week').agg({'Course': 'sum'}).reset_index()
-#     # print(type(group_weeks))
-#     group_weeks.loc[0, 'Total'] = group_weeks.loc[0, 'Course']
-#     for i in range(1, len(group_weeks)):
-#         group_weeks.loc[i, 'Total'] = group_weeks.loc[i, 'Course'] + group_weeks.loc[i - 1, 'Total']
-#         modalities_df[modality] = group_weeks['Total']
+    elif session == '15A':
+        print(group_weeks)
+        sessions_df['15A'] = group_weeks['Total']
 
+    elif session == '15B':
+        print(group_weeks)
+        sessions_df['15B'] = group_weeks['Total']
 
-""" 
-THIS SECTION IDENTIFIES TREND BY Race and Ethnicity
+    elif session == '9A':
+        print(group_weeks)
+        sessions_df['9A'] = group_weeks['Total']
+
+    elif session == '9B':
+        print(group_weeks)
+        sessions_df['9B'] = group_weeks['Total']
+
+    elif '6' in session:
+        print(group_weeks)
+        sessions_df['6'] = group_weeks['Total']
+
+"""
+THIS SECTION IDENTIFIES TREND BY MODALITY
 """
 
-ethnicities = ['Native Hawaiian or Other Pacific Islander', 'Asian', 'Black or African American', 'Hispanic or Latino', 'Two or More Races', 'Race/ethnicity Unknown',
-'American Indian or Alaskan Native', 'Decline to State', 'White']
-for ethnicity in ethnicities:
-    ethnicity_df = df[df['Race/Ethnicity'] == ethnicity]
-    subset_df = ethnicity_df.groupby('Enrollment Add Date').count().reset_index()
-    # print(ethnicity, ethnicity_df)
+modalities = ['Online', 'In Person', 'Hybrid', 'Remote']
+for modality in modalities:
+    print('modal', df)
+    modalities_df = df[df['Modality'] == modalities]
+    subset_df = modalities_df[['Enrollment Add Date', 'Modality', 'Course']]
+    group_dates = subset_df.groupby('Enrollment Add Date').count().reset_index()
+
 
     day_count = 1
     week_count = 1
@@ -158,15 +125,45 @@ for ethnicity in ethnicities:
             group_dates.loc[i, 'Week'] = week_count
             day_count = 1
             week_count += 1
-    # print(group_dates)
+
     group_weeks = group_dates.groupby('Week').agg({'Course': 'sum'}).reset_index()
     # print(type(group_weeks))
     group_weeks.loc[0, 'Total'] = group_weeks.loc[0, 'Course']
     for i in range(1, len(group_weeks)):
         group_weeks.loc[i, 'Total'] = group_weeks.loc[i, 'Course'] + group_weeks.loc[i - 1, 'Total']
-        ethnicity_df[ethnicity] = group_weeks['Total']
-    print('ethnicity', ethnicity_df.head())
-ethnicity_fig = go.Figure()
+        modalities_df[modality] = group_weeks['Total']
+
+
+""" 
+THIS SECTION IDENTIFIES TREND BY Race and Ethnicity
+"""
+
+# ethnicities = ['Native Hawaiian or Other Pacific Islander', 'Asian', 'Black or African American', 'Hispanic or Latino', 'Two or More Races', 'Race/ethnicity Unknown',
+# 'American Indian or Alaskan Native', 'Decline to State', 'White']
+# for ethnicity in ethnicities:
+#     ethnicity_df = df[df['Race/Ethnicity'] == ethnicity]
+#     subset_df = ethnicity_df.groupby('Enrollment Add Date').count().reset_index()
+#     # print(ethnicity, ethnicity_df)
+#
+#     day_count = 1
+#     week_count = 1
+#     for i in range(len(group_dates)):
+#         if day_count < 7:
+#             group_dates.loc[i, 'Week'] = week_count
+#             day_count += 1
+#         else:
+#             group_dates.loc[i, 'Week'] = week_count
+#             day_count = 1
+#             week_count += 1
+#     # print(group_dates)
+#     group_weeks = group_dates.groupby('Week').agg({'Course': 'sum'}).reset_index()
+#     # print(type(group_weeks))
+#     group_weeks.loc[0, 'Total'] = group_weeks.loc[0, 'Course']
+#     for i in range(1, len(group_weeks)):
+#         group_weeks.loc[i, 'Total'] = group_weeks.loc[i, 'Course'] + group_weeks.loc[i - 1, 'Total']
+#         ethnicity_df[ethnicity] = group_weeks['Total']
+#     print('ethnicity', ethnicity_df.head())
+# ethnicity_fig = go.Figure()
 
 # ethnicity_fig.add_trace(go.Scatter(x=ethnicity_df['Week'], y=ethnicity_df['Division'],
 #                          mode='lines',
@@ -176,57 +173,57 @@ ethnicity_fig = go.Figure()
 #                          mode='lines',
 #                          name='Online'))
 
-ethnicity_fig.add_trace(go.Scatter(x=ethnicity_df['Week'], y=ethnicity_df['Asian'],
-                         mode='lines',
-                         name='In Person'))
-
-ethnicity_fig.add_trace(go.Scatter(x=ethnicity_df['Week'], y=ethnicity_df['Black or African American'],
-                         mode='lines',
-                         name='Hybrid'))
-
-ethnicity_fig.add_trace(go.Scatter(x=ethnicity_df['Week'], y=ethnicity_df['Decline to State'],
-                         mode='lines',
-                         name='Remote'))
-
-ethnicity_fig.add_trace(go.Scatter(x=ethnicity_df['Week'], y=ethnicity_df['Two or more Races'],
-                         mode='lines',
-                         name='Remote'))
-
-ethnicity_fig.add_trace(go.Scatter(x=ethnicity_df['Week'], y=ethnicity_df['Native Hawaiian or Other Pacific Islander'],
-                         mode='lines',
-                         name='Remote'))
-
-ethnicity_fig.add_trace(go.Scatter(x=ethnicity_df['Week'], y=ethnicity_df['Hispanic or Latino'],
-                         mode='lines',
-                         name='Remote'))
-
-ethnicity_fig.add_trace(go.Scatter(x=ethnicity_df['Week'], y=ethnicity_df['Hispanic or Latino'],
-                         mode='lines',
-                         name='Remote'))
-
-#     
-#  
-# modality_fig = go.Figure()
-#
-# modality_fig.add_trace(go.Scatter(x=modalities_df['Week'], y=modalities_df['Division'],
-#                          mode='lines',
-#                          name='Division'))
-#
-# modality_fig.add_trace(go.Scatter(x=modalities_df['Week'], y=modalities_df['Online'],
-#                          mode='lines',
-#                          name='Online'))
-#
-# modality_fig.add_trace(go.Scatter(x=modalities_df['Week'], y=modalities_df['In Person'],
+# ethnicity_fig.add_trace(go.Scatter(x=ethnicity_df['Week'], y=ethnicity_df['Asian'],
 #                          mode='lines',
 #                          name='In Person'))
 #
-# modality_fig.add_trace(go.Scatter(x=modalities_df['Week'], y=modalities_df['Hybrid'],
+# ethnicity_fig.add_trace(go.Scatter(x=ethnicity_df['Week'], y=ethnicity_df['Black or African American'],
 #                          mode='lines',
 #                          name='Hybrid'))
 #
-# modality_fig.add_trace(go.Scatter(x=modalities_df['Week'], y=modalities_df['Remote'],
+# ethnicity_fig.add_trace(go.Scatter(x=ethnicity_df['Week'], y=ethnicity_df['Decline to State'],
 #                          mode='lines',
 #                          name='Remote'))
+#
+# ethnicity_fig.add_trace(go.Scatter(x=ethnicity_df['Week'], y=ethnicity_df['Two or more Races'],
+#                          mode='lines',
+#                          name='Remote'))
+#
+# ethnicity_fig.add_trace(go.Scatter(x=ethnicity_df['Week'], y=ethnicity_df['Native Hawaiian or Other Pacific Islander'],
+#                          mode='lines',
+#                          name='Remote'))
+#
+# ethnicity_fig.add_trace(go.Scatter(x=ethnicity_df['Week'], y=ethnicity_df['Hispanic or Latino'],
+#                          mode='lines',
+#                          name='Remote'))
+#
+# ethnicity_fig.add_trace(go.Scatter(x=ethnicity_df['Week'], y=ethnicity_df['Hispanic or Latino'],
+#                          mode='lines',
+#                          name='Remote'))
+
+#     
+#  
+modality_fig = go.Figure()
+
+modality_fig.add_trace(go.Scatter(x=modalities_df['Week'], y=modalities_df['Division'],
+                         mode='lines',
+                         name='Division'))
+
+modality_fig.add_trace(go.Scatter(x=modalities_df['Week'], y=modalities_df['Online'],
+                         mode='lines',
+                         name='Online'))
+
+modality_fig.add_trace(go.Scatter(x=modalities_df['Week'], y=modalities_df['In Person'],
+                         mode='lines',
+                         name='In Person'))
+
+modality_fig.add_trace(go.Scatter(x=modalities_df['Week'], y=modalities_df['Hybrid'],
+                         mode='lines',
+                         name='Hybrid'))
+
+modality_fig.add_trace(go.Scatter(x=modalities_df['Week'], y=modalities_df['Remote'],
+                         mode='lines',
+                         name='Remote'))
 
 
 
